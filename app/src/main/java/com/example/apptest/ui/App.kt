@@ -11,8 +11,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import com.example.apptest.navigation.TopLevelDestination
 import com.example.matches.navigation.matchesGraph
 import com.example.matches.navigation.navigateToMatchesScreen
@@ -33,7 +35,9 @@ fun App(
     }
     LaunchedEffect(currentDestination) {
         when (currentDestination) {
-            TopLevelDestination.PARTICIPATION_TEAM -> navController.navigateToParticipatingTeamScreen()
+            TopLevelDestination.PARTICIPATION_TEAM -> navController.navigateToParticipatingTeamScreen(
+                navOptions = navOptions { restoreState = true }
+            )
             TopLevelDestination.MATCHES -> navController.navigateToMatchesScreen()
             TopLevelDestination.SEARCH -> navController.navigateToSearchScreen()
         }

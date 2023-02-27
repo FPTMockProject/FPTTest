@@ -15,6 +15,7 @@ val modules = arrayOf(
     ":core:domain",
     ":core:network",
     ":core:common",
+    ":service:team-service"
 )
 include(*modules)
 

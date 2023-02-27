@@ -57,7 +57,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.retrofit2)
-    implementation(libs.retrofit2.converter.gson)
 
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
@@ -70,4 +69,5 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:network"))
     implementation(project(":core:common"))
+    implementation(project(":service:team-service"))
 }
