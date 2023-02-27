@@ -21,7 +21,7 @@ class GetTeamsUseCaseImpl @Inject constructor(
         while (true) {
             val teams = teamRepository.getTeams()
             emit(teams)
-            delay(5000L)
+            delay(10000L)
         }
     }
 

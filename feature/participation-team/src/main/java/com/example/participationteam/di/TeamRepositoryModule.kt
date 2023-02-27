@@ -1,4 +1,4 @@
-package com.example.apptest.di
+package com.example.participationteam.di
 
 import com.example.participationteam.data.repositories.TeamRepositoryImpl
 import com.example.participationteam.domain.repositories.TeamRepository
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+abstract class TeamRepositoryModule {
     @Binds
     @Singleton
     internal abstract fun bindTeamRepository(repository: TeamRepositoryImpl): TeamRepository

@@ -1,4 +1,4 @@
-package com.example.apptest.di
+package com.example.participationteam.di
 
 import com.example.participationteam.data.services.TeamService
 import dagger.Module
@@ -10,8 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ServiceModule {
-
+object TeamModule {
     @Provides
     @Singleton
     fun provideTeamService(): TeamService {
