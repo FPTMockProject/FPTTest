@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.example.matches.R
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.text.style.TextAlign
+import com.example.common.toDateTimeString
 import com.example.matches.domain.models.Match
 import com.example.ui.VideoView
 
@@ -44,7 +45,9 @@ fun MatchesScreen(
         contentPadding = PaddingValues(10.dp),
         state = lazyListState,
     ) {
-        item {
+        item(
+            key = R.string.matches,
+        ) {
             Text(
                 modifier = Modifier
                     .padding(10.dp),
@@ -53,7 +56,9 @@ fun MatchesScreen(
                 fontWeight = FontWeight.Black,
             )
         }
-        item {
+        item(
+            key = R.string.upcoming,
+        ) {
             Text(
                 modifier = Modifier
                     .padding(10.dp),
@@ -63,7 +68,7 @@ fun MatchesScreen(
             )
         }
         if (upcoming.isEmpty()) {
-            item {
+            item(key = R.string.no_data) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -74,12 +79,17 @@ fun MatchesScreen(
                 )
             }
         }
-        items(upcoming.size) { index ->
+        items(
+            count = upcoming.size,
+            key = { index -> upcoming[index].hashCode() }
+        ) { index ->
             val match = upcoming[index]
             MatchItem(match = match)
             Spacer(modifier = Modifier.height(10.dp))
         }
-        item {
+        item(
+            key = R.string.previous,
+        ) {
             Text(
                 modifier = Modifier
                     .padding(10.dp),
@@ -89,7 +99,7 @@ fun MatchesScreen(
             )
         }
         if (previous.isEmpty()) {
-            item {
+            item(key = R.string.no_data + 1) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -100,7 +110,10 @@ fun MatchesScreen(
                 )
             }
         }
-        items(previous.size) { index ->
+        items(
+            count = previous.size,
+            key = { index -> previous[index].hashCode() }
+        ) { index ->
             val match = previous[index]
             MatchItem(match = match)
             Spacer(modifier = Modifier.height(10.dp))
@@ -119,6 +132,14 @@ fun MatchItem(match: Match) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(5.dp),
+                text = match.date.toDateTimeString(),
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(10.dp),
                 text = match.description,
                 fontSize = 16.sp,
@@ -129,7 +150,7 @@ fun MatchItem(match: Match) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp),
+                        .padding(5.dp),
                     text = "${winnerText}: ${match.winner}",
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center,
