@@ -12,6 +12,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.androidx.core.ktx)
     testImplementation(libs.junit)
 
     implementation(libs.retrofit2)

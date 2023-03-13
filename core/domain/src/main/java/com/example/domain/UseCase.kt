@@ -9,5 +9,5 @@ public abstract class UseCase<in P, out R>(private val dispatcher: CoroutineDisp
         execute(params)
     }
 
-    internal abstract suspend fun execute(params: P): R
+    abstract suspend fun execute(params: P): R
 }

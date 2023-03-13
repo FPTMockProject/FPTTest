@@ -5,87 +5,122 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navOptions
-import com.example.apptest.navigation.TopLevelDestination
-import com.example.matches.navigation.matchesGraph
-import com.example.matches.navigation.navigateToMatchesScreen
-import com.example.participationteam.navigation.PARTICIPATING_TEAM_GRAPH
-import com.example.participationteam.navigation.navigateToParticipatingTeamScreen
-import com.example.participationteam.navigation.participatingTeamGraph
-import com.example.search.navigateToSearchScreen
-import com.example.search.searchGraph
-import com.example.theme.LightColorScheme
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun App(
-    navController: NavHostController = rememberNavController(),
+    appViewModel: AppViewModel = hiltViewModel(),
 ) {
-    var currentDestination by remember {
-        mutableStateOf(TopLevelDestination.PARTICIPATION_TEAM)
+    var location by remember {
+        mutableStateOf("55N")
     }
-    LaunchedEffect(currentDestination) {
-        when (currentDestination) {
-            TopLevelDestination.PARTICIPATION_TEAM -> navController.navigateToParticipatingTeamScreen(
-                navOptions = navOptions { restoreState = true }
-            )
-            TopLevelDestination.MATCHES -> navController.navigateToMatchesScreen()
-            TopLevelDestination.SEARCH -> navController.navigateToSearchScreen()
+    var locationError by remember {
+        mutableStateOf("")
+    }
+    var instruction by remember {
+        mutableStateOf("MMRMMLLMRMLLM")
+    }
+    var instructionError by remember {
+        mutableStateOf("")
+    }
+    val onSubmitPressed by rememberUpdatedState {
+        locationError = ""
+        instructionError = ""
+        if (location.isEmpty()) {
+            locationError = "Required field is empty"
         }
+        if (instruction.isEmpty()) {
+            instructionError = "Required field is empty"
+        }
+        appViewModel.onSubmitPressed(location, instruction)
     }
+    val state by appViewModel.uiState.collectAsState()
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
         Scaffold(
-            bottomBar = {
-                NavigationBar(
-                    containerColor = LightColorScheme.primary,
-                    contentColor = Color.White,
-                    tonalElevation = 6.dp,
-                ) {
-                    TopLevelDestination.values().forEach { destination ->
-                        val selected = destination == currentDestination
-                        NavigationBarItem(
-                            selected = selected,
-                            onClick = { currentDestination = destination },
-                            icon = {
-                                Icon(
-                                    painter = painterResource(id = if (selected) destination.selectedIconRes else destination.unselectedIconRes),
-                                    contentDescription = null
-                                )
-                            },
-                            label = {
-                                Text(
-                                    text = stringResource(id = destination.titleTextRes),
-                                    textAlign = TextAlign.Center,
-                                    fontSize = 12.sp,
-                                    color = if (selected) Color.White else Color.Black
-                                )
-                            }
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = "NASA"
                         )
                     }
-                }
-            }
+                )
+            },
         ) { contentPadding ->
-            NavHost(
+            Column(
                 modifier = Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding)
+                    .padding(horizontal = 10.dp)
                     .consumeWindowInsets(contentPadding),
-                navController = navController,
-                startDestination = PARTICIPATING_TEAM_GRAPH
             ) {
-                matchesGraph()
-                participatingTeamGraph()
-                searchGraph()
+                TextField(
+                    value = location,
+                    onValueChange = { value -> location = value },
+                    label = {
+                        Text(
+                            text = "Location"
+                        )
+                    },
+                    placeholder = {
+                        Text(
+                            text = "Input your location coordinate"
+                        )
+                    },
+                    isError = locationError.isNotEmpty(),
+                )
+                if (locationError.isNotEmpty()) {
+                    Text(
+                        text = locationError,
+                        color = Color.Red
+                    )
+                }
+                Spacer(
+                    modifier = Modifier.height(10.dp),
+                )
+                TextField(
+                    value = instruction,
+                    onValueChange = { value -> instruction = value },
+                    label = {
+                        Text(
+                            text = "Instruction"
+                        )
+                    },
+                    placeholder = {
+                        Text(
+                            text = "Input your instruction"
+                        )
+                    },
+                    isError = instructionError.isNotEmpty(),
+                )
+                if (instructionError.isNotEmpty()) {
+                    Text(
+                        text = instructionError,
+                        color = Color.Red
+                    )
+                }
+                Spacer(
+                    modifier = Modifier.height(10.dp),
+                )
+                ElevatedButton(
+                    onClick = onSubmitPressed
+                ) {
+                    Text(
+                        text = "Submit"
+                    )
+                }
+                Spacer(
+                    modifier = Modifier.height(10.dp),
+                )
+                Text(
+                    text = "Output: ${state.output}",
+                    style = MaterialTheme.typography.headlineMedium,
+                )
             }
         }
     }

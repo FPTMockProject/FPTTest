@@ -8,14 +8,10 @@ pluginManagement {
 rootProject.name = "AppTest"
 val modules = arrayOf(
     ":app",
-    ":feature:search",
-    ":feature:participation-team",
-    ":feature:matches",
     ":core:ui",
     ":core:domain",
     ":core:network",
     ":core:common",
-    ":service:team-service"
 )
 include(*modules)
 

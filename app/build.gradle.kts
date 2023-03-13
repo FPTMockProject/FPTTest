@@ -50,6 +50,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.compose.bom)
+    implementation(libs.androidx.core.ktx)
     androidTestImplementation(libs.androidx.compose.bom)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.navigation.compose)
@@ -74,10 +75,12 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     testImplementation(libs.hilt.android.testing)
     kaptTest(libs.hilt.android.compiler)
+    testImplementation(libs.mockito.core)
+    androidTestImplementation(libs.mockito.android)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.arch.core.testing)
+    testImplementation(libs.turbine)
 
-    implementation(project(":feature:matches"))
-    implementation(project(":feature:participation-team"))
-    implementation(project(":feature:search"))
     implementation(project(":core:ui"))
     implementation(project(":core:common"))
     implementation(project(":core:domain"))

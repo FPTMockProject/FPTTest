@@ -23,6 +23,10 @@ object DispatcherModule {
     @MainDispatcher
     @Provides
     fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
+
+    @UnconfinedDispatcher
+    @Provides
+    fun providesUnconfinedDispatcher(): CoroutineDispatcher = Dispatchers.Unconfined
 }
 
 @Retention(AnnotationRetention.BINARY)
@@ -36,3 +40,7 @@ annotation class IoDispatcher
 @Retention(AnnotationRetention.BINARY)
 @Qualifier
 annotation class MainDispatcher
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class UnconfinedDispatcher
